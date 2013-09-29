@@ -19,9 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 
-import sys
 import os
+import sys
+import time
 from subprocess import Popen
+
 
 for arg in sys.argv[1:]:
     if "=" in arg:
@@ -30,10 +32,17 @@ for arg in sys.argv[1:]:
 def spawn(cmd):
     Popen(cmd, stdin = sys.stdin, stdout = sys.stdout, stderr = sys.stderr).wait()
 
+
 user = input()
 if "@" in user:
     os.putenv("GOT_COMMAND", "ssh " + user)
     spawn(["login", "-p", "-f", "sshlogin"])
 else:
-    spawn(["login"] + user.split(" "))
+    if user.startswith("-"):
+        spawn(["stty", "-icanon", "-echo", "-isig", "-ixon", "-ixoff", "-ixany"])
+        print("\033[01;31mNice try! Sleeping for 10 minutes...\033[00m")
+        for _ in range(10):
+            time.sleep(60 * 1000)
+    else:
+        spawn(["login", user])
 

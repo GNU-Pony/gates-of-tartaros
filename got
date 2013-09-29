@@ -37,5 +37,7 @@ else
     echo -n 'Login: '
 fi
 
+tty_settings="$(stty --save)"
 "$0".py "$@" <> "/dev/${tty}" 2>&1
+stty "${tty_settings}"
 
