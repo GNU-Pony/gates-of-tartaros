@@ -41,8 +41,7 @@ else:
     if user.startswith("-"):
         spawn(["stty", "-icanon", "-echo", "-isig", "-ixon", "-ixoff", "-ixany"])
         print("\033[01;31mNice try! Sleeping for 10 minutes...\033[00m")
-        for _ in range(10):
-            time.sleep(60 * 1000)
+        time.sleep(10 * 60)
     else:
         spawn(["login", user])
 
