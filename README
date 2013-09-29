@@ -5,7 +5,7 @@ En example /etc/gotrc file is included,
 it requires ponysay, util-say and KMS
 support, and prints a random pony.
 
-To login with over SSH type:
+To log in with over SSH type:
    user@host
    or
    user@host port
