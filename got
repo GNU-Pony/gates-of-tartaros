@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# gates-of-tartaros – Minimal replacement for agetty with SSH support
+# 
+# Copyright © 2013  Mattias Andrée (maandree@member.fsf.org)
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+tty="$1"
+shift 1
+
+NAME="$(uname -o)"
+ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
+if [ -f "/etc/os-release" ]; then
+    . "/etc/os-release"
+fi
+
+if [ -f "/etc/gotrc" ]; then
+    .  "/etc/gotrc"
+else
+    echo -en '\e[H\e[2J'
+    echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
+    echo
+    echo -n 'Login: '
+fi
+
+"$0".py "$@" <> "/dev/${tty}" 2>&1
+
