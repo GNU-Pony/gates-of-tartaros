@@ -1,0 +1,22 @@
+Minimal replacement for agetty written in
+Bash and Python with support for SSH.
+
+En example /etc/gotrc file is included,
+it requires ponysay, util-say and KMS
+support, and prints a random pony.
+
+To login with over SSH type:
+   user@host
+   or
+   user@host port
+
+SSH login requires that you have a
+user without password called sshlogin
+that have got-cmd as its default shell.
+
+Usage:
+	got TTY EXPORTS...
+
+Example:
+	got tty1 TERM=linux
+
