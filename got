@@ -64,16 +64,16 @@ if [ "$1" = "-" ]; then
 	.  "@etc@/@command@rc"
     fi
     
+    tty_settings="$(stty --save)"
     $display_function
     $read_function
     $login_function
+    stty "${tty_settings}"
 else
     # cannot get any other solution to work with `login`
     # than to spawn a new process with the pipes pre-set
     
     tty="@dev@/$1"
-    tty_settings="$(stty --save)"
     "$0" - "$@" > "${tty}" 2> "${tty}" < "${tty}"
-    stty "${tty_settings}"
 fi
 
