@@ -58,8 +58,8 @@ login_function=_login
 function _login
 {
     if [ ! "${user/@/}" = "${user}" ]; then
-	export GOT_COMMAND="@ssh@ ${user}"
-	setsid -c login -p -f @sshlogin@
+	setsid -c @ssh@ ${user} || sleep 3
+	# The sleep allows you to see any error you made
     elif [ "${user::1}" = "-" ]; then
 	stty -icanon -echo -isig -ix{on,off,any}
 	echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'

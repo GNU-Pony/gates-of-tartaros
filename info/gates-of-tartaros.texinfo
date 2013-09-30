@@ -15,7 +15,6 @@
 @set DEV /dev
 @set ETC /etc
 @set GOT got
-@set SSHLOGIN sshlogin
 @set SSH ssh
 @c --- end of do not touch ---
 
@@ -100,16 +99,6 @@ for SSH logins include:
 @node Setting up
 @chapter Setting up
 
-@menu
-* Configure inittab::               Configure your system to use Gates of Tartaros.
-* Enable SSH::                      Enable SSH login on Gates of Tartaros.
-@end menu
-
-
-
-@node Configure inittab
-@section Configure inittab
-
 To set up your inittab to to use Gates of Tartaros instead
 of @command{agetty}, in your inittab, use the command
 @command{@value{SBIN}/@value{GOT}} with the first argument
@@ -124,21 +113,6 @@ c3:345:respawn:@value{SBIN}/@value{GOT} tty3 TERM=linux
 c4:345:respawn:@value{SBIN}/@value{GOT} tty4 TERM=linux
 c5:345:respawn:@value{SBIN}/@value{GOT} tty5 TERM=linux
 c6:345:respawn:@value{SBIN}/@value{GOT} tty6 TERM=linux
-@end example
-
-
-
-@node Enable SSH
-@section Enable SSH
-
-To enable SSH login support you must create a user
-named `@value{SSHLOGIN}', which will be logged in and
-run SSH when using SSH login.@footnote{SSH cannot operate
-without a using being logged in.} The user's default
-shell must be set to @code{@value{GOT}-cmd}.
-
-@example
-sudo useradd -m -s @value{BIN}/@value{GOT}-cmd @value{SSHLOGIN}
 @end example
 
 

@@ -7,7 +7,6 @@ DATA = /usr/share
 LICENSES = $(DATA)/licenses
 COMMAND = got
 PKGNAME = gates-of-tartaros
-SSHUSER = sshlogin
 SSH = ssh
 
 BASH_SHEBANG = /usr/bin/env bash
@@ -36,7 +35,6 @@ info/%.texinfo.install: info/%.texinfo
 	sed -i 's:^@set DEV /dev:@set DEV $(DEV):g' "$@"
 	sed -i 's:^@set ETC /etc:@set ETC $(SYSCONF):g' "$@"
 	sed -i 's:^@set GOT got:@set GOT $(COMMAND):g' "$@"
-	sed -i 's:^@set SSHLOGIN sshlogin:@set SSHLOGIN $(SSHUSER):g' "$@"
 	sed -i 's:^@set SSH ssh:@set SSH $(SSH):g' "$@"
 
 .PHONY: cmd
@@ -49,7 +47,6 @@ got.install: got
 	sed -i 's:@dev@:$(DEV):g' "$@"
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
 	sed -i 's:@command@:$(COMMAND):g' "$@"
-	sed -i 's:@sshlogin@:$(SSHUSER):g' "$@"
 	sed -i 's:@ssh@:$(SSH):g' "$@"
 
 got-cmd.install: got-cmd

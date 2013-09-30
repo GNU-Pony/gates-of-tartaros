@@ -9,10 +9,6 @@ To log in with over SSH type:
    or
    user@host port
 
-SSH login requires that you have a
-user without password called sshlogin
-that have got-cmd as its default shell.
-
 Usage:
 	got TTY EXPORTS...
 
