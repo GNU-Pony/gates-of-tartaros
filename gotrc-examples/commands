@@ -22,7 +22,7 @@ _login_commands ()
 	    acpi -V
 	    read __
 	elif [ "${user}" = "+backlight" ]; then
-	    if [ "${LANG/UTF-8/}" = "${LANG}" ]; then
+	    if [ "${LANG%UTF-8*}" = "${LANG}" ]; then
 		export LANG="en_GB.UTF-8"
 	    fi
 	    adjbacklight
