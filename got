@@ -24,6 +24,9 @@ if [ "$1" = "-" ]; then
     
     export "$@"
     
+    login_function=_login
+    display_function=_display
+    
     function _login
     {
 	read user
@@ -56,8 +59,8 @@ if [ "$1" = "-" ]; then
 	.  "@etc@/@command@rc"
     fi
     
-    _display
-    _login
+    $display_function
+    $login_function
 else
     # cannot get any other solution to work with `login`
     # then to spawn a new process with pipes preset
