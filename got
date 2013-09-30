@@ -27,7 +27,7 @@ export "$@"
 exec 0<&-
 exec 1<&-
 exec 2<&-
-exec 0<>"@dev@${tty}"
+exec 0<>"@dev@/${tty}"
 exec 1>&0
 exec 2>&0
 
@@ -73,11 +73,11 @@ function _login
 # Load OS information and extensions
 NAME="$(uname -o)"
 ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
-if [ -f "@etc@os-release" ]; then
-    . "@etc@os-release"
+if [ -f "@etc@/os-release" ]; then
+    . "@etc@/os-release"
 fi
-if [ -f "@etc@@command@rc" ]; then
-    .  "@etc@@command@rc"
+if [ -f "@etc@/@command@rc" ]; then
+    .  "@etc@/@command@rc"
 fi
 
 # Let the user log in
