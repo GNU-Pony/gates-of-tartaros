@@ -1,5 +1,8 @@
 Minimal replacement for agetty written in
 GNU Bash with support for remote SSH login.
+Note however that because of the use of GNU
+Bash, rather than a compiled language,
+gates-of-tartaros uses memory than agetty.
 
 To log in with over SSH type:
    user@host
