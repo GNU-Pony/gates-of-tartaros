@@ -29,6 +29,13 @@ info: gates-of-tartaros.info.gz
 
 info/%.texinfo.install: info/%.texinfo
 	cp "$<" "$@"
+	sed -i 's:^@set BIN /bin:@set BIN $(PREFIX)$(BIN):g' "$@"
+	sed -i 's:^@set SBIN /sbin:@set SBIN $(PREFIX)$(SBIN):g' "$@"
+	sed -i 's:^@set DEV /dev:@set DEV $(DEV):g' "$@"
+	sed -i 's:^@set ETC /etc:@set ETC $(SYSCONF):g' "$@"
+	sed -i 's:^@set GOT got:@set GOT $(COMMAND):g' "$@"
+	sed -i 's:^@set SSHLOGIN sshlogin:@set SSHLOGIN $(SSHUSER):g' "$@"
+	sed -i 's:^@set SSH ssh:@set SSH $(SSH):g' "$@"
 
 .PHONY: cmd
 cmd: got.install got-cmd.install

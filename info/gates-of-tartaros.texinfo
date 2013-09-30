@@ -10,6 +10,13 @@
 @c %**end of header
 
 @c --- start of do not touch ---
+@set BIN /bin
+@set SBIN /sbin
+@set DEV /dev
+@set ETC /etc
+@set GOT got
+@set SSHLOGIN sshlogin
+@set SSH ssh
 @c --- end of do not touch ---
 
 
@@ -80,13 +87,13 @@ is that it lets you easily login to another computer with SSH.
 
 To login when Gates of Tartaros is running, just type your
 username, but for an SSH session, type what you would type
-as the argments for @command{ssh}. Normal patterns for SSH
-logins include:
+as the argments for @command{@value{SSH}}. Normal patterns
+for SSH logins include:
 
 @itemize
 @item @code{username@@hostname}
 @item @code{username@@hostname port}
-@end itemsize
+@end itemize
 
 
 
@@ -105,18 +112,18 @@ logins include:
 
 To set up your inittab to to use Gates of Tartaros instead
 of @command{agetty}, in your inittab, use the command
-@command{/sbin/got} with the first argument being the tty
-it should open on (@code{tty1}, @code{tty2}, ..., not
-@code{/dev/tty1}, @code{/dev/tty2}, ...), followed by exports.
-For example:
+@command{@value{SBIN}/@value{GOT}} with the first argument
+being the tty it should open on (@code{tty1}, @code{tty2},
+..., not @code{@value{DEV}/tty1}, @code{@value{DEV}/tty2},
+...), followed by exports. For example:
 
 @example
-c1:345:respawn:/sbin/got tty1 TERM=linux
-c2:345:respawn:/sbin/got tty2 TERM=linux
-c3:345:respawn:/sbin/got tty3 TERM=linux
-c4:345:respawn:/sbin/got tty4 TERM=linux
-c5:345:respawn:/sbin/got tty5 TERM=linux
-c6:345:respawn:/sbin/got tty6 TERM=linux
+c1:345:respawn:@value{SBIN}/@value{GOT} tty1 TERM=linux
+c2:345:respawn:@value{SBIN}/@value{GOT} tty2 TERM=linux
+c3:345:respawn:@value{SBIN}/@value{GOT} tty3 TERM=linux
+c4:345:respawn:@value{SBIN}/@value{GOT} tty4 TERM=linux
+c5:345:respawn:@value{SBIN}/@value{GOT} tty5 TERM=linux
+c6:345:respawn:@value{SBIN}/@value{GOT} tty6 TERM=linux
 @end example
 
 
@@ -125,37 +132,37 @@ c6:345:respawn:/sbin/got tty6 TERM=linux
 @section Enable SSH
 
 To enable SSH login support you must create a user
-named `sshlogin', which will be logged in and run
-SSH when using SSH login.@footnote{Cannot operate
+named `@value{SSHLOGIN}', which will be logged in and
+run SSH when using SSH login.@footnote{SSH cannot operate
 without a using being logged in.} The user's default
-shell must be set to @code{got-cmd}.
+shell must be set to @code{@value{GOT}-cmd}.
 
 @example
-sudo useradd -m -s /bin/got-cmd sshlogin
+sudo useradd -m -s @value{BIN}/@value{GOT}-cmd @value{SSHLOGIN}
 @end example
 
 
 
 @node Extensibility
-@section Extensibility
+@chapter Extensibility
 
 Extensions are loaded by Gates of Tartaros by sourcing
-the file @file{/etc/gotrc} if it exists. @file{/etc/gotrc}
-can change the behaviour of Gates of Tartaros or source
-other files that does so.
+the file @file{@value{ETC}/@value{GOT}rc} if it exists.
+@file{@value{ETC}/@value{GOT}rc} can change the behaviour
+of Gates of Tartaros or source other files that does so.
 
 Gates of Tartaros as two functions is calls directly after
 each other: @code{_display} for printing everying you see,
 and then @code{_login} to ask for username and start a
 login. Password checking is handled by external programs
-@command{ssh} and @command{login} that are used doing
+@command{@value{SSH}} and @command{login} that are used doing
 the actual user login. You either redefine these functions,
 or change the variables @code{display_function} or
 @code{login_function} to contain the name of the functions
 you want to be called instead. The latter option can be
 used to extend rather then replace the predefined functions.
 
-The file @file{/etc/os-release} will have been sources
+The file @file{@value{ETC}/os-release} will have been sources
 before the extensions and @code{NAME} and @code{ANSI_COLOR}
 will have fallback values. @code{NAME} is the name of
 the operating system (distribution) and @code{ANSI_COLOR}
