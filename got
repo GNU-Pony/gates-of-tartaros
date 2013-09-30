@@ -24,12 +24,12 @@ shift 1
 
 NAME="$(uname -o)"
 ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
-if [ -f "/etc/os-release" ]; then
-    . "/etc/os-release"
+if [ -f "@etc@os-release" ]; then
+    . "@etc@os-release"p
 fi
 
-if [ -f "/etc/gotrc" ]; then
-    .  "/etc/gotrc"
+if [ -f "@etc@@command@rc" ]; then
+    .  "@etc@@command@rc"
 else
     echo -en '\e[H\e[2J'
     echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
@@ -38,6 +38,6 @@ else
 fi
 
 tty_settings="$(stty --save)"
-"$0".py "$@" <> "/dev/${tty}" 2>&1
+@prefix@@libexec@@command@.py "$@" <> "/dev/${tty}" 2>&1
 stty "${tty_settings}"
 

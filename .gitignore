@@ -6,4 +6,5 @@ __pycache__/
 *.bak
 *.sw[op]
 *.py[co]
+*.install
 
