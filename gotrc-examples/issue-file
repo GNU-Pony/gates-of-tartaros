@@ -1,0 +1,47 @@
+# -*- shell-script -*-
+
+# Module for using the /etc/issue file however
+# only partially implemented, but also extended
+
+
+function _display
+{
+    python3 <<EOF
+buf = "\\033[H\\033[2J"
+data = None
+with open("/etc/issue", "rb") as f:
+    data = f.read().decode("utf-8", "replace")
+esc = False
+for c in data:
+    if esc:
+        esc = False
+        if  c in "eE":  buf += "\\033"
+        elif c == "N":  buf += "\\n"
+        elif c == "T":  buf += "\\t"
+        elif c == "s":  buf += "$(uname -s)"
+        elif c == "n":  buf += "$(uname -n)"
+        elif c == "r":  buf += "$(uname -r)"
+        elif c == "v":  buf += "$(uname -v)"
+        elif c == "m":  buf += "$(uname -m)"
+        elif c == "o":  buf += "(\\\\o is not implemented)"
+        elif c == "O":  buf += "(\\\\O is not implemented)"
+        elif c == "d":  buf += "(\\\\d is not implemented)"
+        elif c == "t":  buf += "(\\\\t is not implemented)"
+        elif c == "l":  buf += "${tty}"
+        elif c == "b":  buf += "(\\\\b is not implemented)"
+        elif c == "u":  buf += "(\\\\u is not implemented)"
+        elif c == "U":  buf += "(\\\\U is not implemented)"
+        elif c == "4":  buf += "(\\\\4 is not implemented)"
+        elif c == "6":  buf += "(\\\\6 is not implemented)"
+        else:
+            buf += c
+    elif c == "\\\\":
+        esc = True
+    else:
+        buf += c
+print(buf, end = "", flush = True)
+EOF
+    echo 
+    echo -n 'Login: '
+}
+
