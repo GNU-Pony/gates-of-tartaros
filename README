@@ -10,7 +10,7 @@ instead of bash by running make with the
 argument BASH_SHEBANG="/usr/bin/env dash".
 Doing so will more halve the memory using,
 reducing the memory usage to slightly below
-agetty.
+that of agetty.
 
 
 To log in with over SSH type:
