@@ -13,6 +13,14 @@ function _login_commands
 	    shutdown -h now
 	elif [ "${user}" = "+reboot" ]; then
 	    reboot
+	elif [ "${user}" = "+time" ]; then
+	    echo
+	    date +%Y-\(%m\)%b-%d\ %T,\ %a\ w%W/%V,\ %Z
+	    read
+	elif [ "${user}" = "+battery" ]; then
+	    echo
+	    acpi -V
+	    read
 	elif [ "${user}" = "+backlight" ]; then
 	    if [ "${LANG/UTF-8/}" = "${LANG}" ]; then
 		export LANG="en_GB.UTF-8"
