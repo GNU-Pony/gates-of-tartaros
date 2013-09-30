@@ -1,8 +1,6 @@
 # -*- shell-script -*-
 
-# The module allows you to use upper case letters when login in, however, arguments
-# passed to external programs, like ssh, defined by the user in the login line
-# will be converted to lower case.
+# The module allows you to use upper case letters when login in.
 
 
 read_function_allow_uppercase=$read_function
@@ -11,7 +9,14 @@ read_function=_read_allow_uppercase
 function _read_allow_uppercase
 {
     $read_function_allow_uppercase
-    lower="$(sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm' <<< "${user}")"
+    lower=""
+    for word in $user; do
+	if [ ! "${word::1}" = "-" ]; then # this check is done so ssh arguments are not made into lower case
+	    word="$(sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/' <<< "${word}")"
+	fi
+	lower="${lower} ${word}"
+    done
+    lower="${lower:1}"
     if [ ! "${lower}" = "${user}" ]; then
 	#stty olcuc ## Uncomment this if you want to go old-school Unix, too bad
 	            ## it will break colours and only uppercases ASCII letters.
