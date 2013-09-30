@@ -5,6 +5,7 @@ SBIN = /sbin
 LICENSES = /usr/share/licenses
 COMMAND = got
 PKGNAME = gates-of-tartaros
+SSHUSER = sshlogin
 
 BASH_SHEBANG = /usr/bin/env bash
 
@@ -17,6 +18,7 @@ got.install: got
 	sed -i 's:@prefix@:$(PREFIX):g' "$@"
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
 	sed -i 's:@command@:$(COMMAND):g' "$@"
+	sed -i 's:@sshlogin@:$(SSHUSER):g' "$@"
 
 got-cmd.install: got-cmd
 	cp "$<" "$@"

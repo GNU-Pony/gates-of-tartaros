@@ -32,7 +32,7 @@ if [ "$1" = "-" ]; then
 	read user
 	if [ ! "${user/@/}" = "${user}" ]; then
 	    export GOT_COMMAND="ssh ${user}"
-	    login -p -f sshlogin
+	    login -p -f @sshlogin@
 	elif [ "${user::1}" = "-" ]; then
 	    stty -icanon -echo -isig -ix{on,off,any}
 	    echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
