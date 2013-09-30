@@ -12,7 +12,7 @@ SSH = ssh
 
 BASH_SHEBANG = /usr/bin/env bash
 
-EXAMPLES = lower-left-ponysay allow-uppercase issue-file
+EXAMPLES = lower-left-ponysay allow-uppercase issue-file commands
 
 
 

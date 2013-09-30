@@ -1,0 +1,36 @@
+# -*- shell-script -*-
+
+# The module allows you to launch a few programs without even logging in
+
+
+login_function_commands=$login_function
+login_function=_login_commands
+
+function _login_commands
+{
+    if [ "${user::1}" = "+" ]; then
+	if [ "${user}" = "+shutdown" ]; then
+	    shutdown
+	elif [ "${user}" = "+reboot" ]; then
+	    reboot
+	elif [ "${user}" = "+backlight" ]; then
+	    if [ "${LANG/UTF-8/}" = "${LANG}" ]; then
+		export LANG="en_GB.UTF-8"
+	    fi
+	    adjbacklight
+	else
+	    echo <<EOF
+Command is not recognised.
+Recognised commands include:
+
++shutdown     Shutdown the computer
++reboot       Reboot the computer
++backlight    Adjust the backlight
+EOF
+	    read
+	fi
+    else
+	$login_function_commands
+    fi
+}
+
