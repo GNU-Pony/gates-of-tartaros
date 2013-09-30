@@ -27,7 +27,7 @@ export "$@"
 exec 0<&-
 exec 1<&-
 exec 2<&-
-exec 0<>"/dev/${tty}"
+exec 0<>"@dev@${tty}"
 exec 1>&0
 exec 2>&0
 
@@ -58,8 +58,8 @@ login_function=_login
 function _login
 {
     if [ ! "${user/@/}" = "${user}" ]; then
-	export GOT_COMMAND="ssh ${user}"
-	setsid -c login -p -f sshlogin
+	export GOT_COMMAND="@ssh@ ${user}"
+	setsid -c login -p -f @sshlogin@
     elif [ "${user::1}" = "-" ]; then
 	stty -icanon -echo -isig -ix{on,off,any}
 	echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
@@ -73,11 +73,11 @@ function _login
 # Load OS information and extensions
 NAME="$(uname -o)"
 ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
-if [ -f "/etc/os-release" ]; then
-    . "/etc/os-release"
+if [ -f "@etc@os-release" ]; then
+    . "@etc@os-release"
 fi
-if [ -f "/etc/gotrc" ]; then
-    .  "/etc/gotrc"
+if [ -f "@etc@@command@rc" ]; then
+    .  "@etc@@command@rc"
 fi
 
 # Let the user log in
