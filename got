@@ -24,12 +24,25 @@ if [ "$1" = "-" ]; then
     
     export "$@"
     
-    login_function=_login
     display_function=_display
+    read_function=_read
+    login_function=_login
+    
+    function _display
+    {
+	echo -en '\e[H\e[2J'
+	echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
+	echo
+	echo -n 'Login: '
+    }
+    
+    function _read
+    {
+	read user
+    }
     
     function _login
     {
-	read user
 	if [ ! "${user/@/}" = "${user}" ]; then
 	    export GOT_COMMAND="@ssh@ ${user}"
 	    login -p -f @sshlogin@
@@ -42,14 +55,6 @@ if [ "$1" = "-" ]; then
 	fi
     }
     
-    function _display
-    {
-	echo -en '\e[H\e[2J'
-	echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
-	echo
-	echo -n 'Login: '
-    }
-    
     NAME="$(uname -o)"
     ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
     if [ -f "@etc@/os-release" ]; then
@@ -60,6 +65,7 @@ if [ "$1" = "-" ]; then
     fi
     
     $display_function
+    $read_function
     $login_function
 else
     # cannot get any other solution to work with `login`

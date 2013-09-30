@@ -151,16 +151,18 @@ the file @file{@value{ETC}/@value{GOT}rc} if it exists.
 @file{@value{ETC}/@value{GOT}rc} can change the behaviour
 of Gates of Tartaros or source other files that does so.
 
-Gates of Tartaros as two functions is calls directly after
+Gates of Tartaros as three functions is calls directly after
 each other: @code{_display} for printing everying you see,
-and then @code{_login} to ask for username and start a
+@code{_read} to accept username input and stores it in the
+variable @code{user}, and then @code{_login} to start a
 login. Password checking is handled by external programs
-@command{@value{SSH}} and @command{login} that are used doing
-the actual user login. You either redefine these functions,
-or change the variables @code{display_function} or
-@code{login_function} to contain the name of the functions
-you want to be called instead. The latter option can be
-used to extend rather then replace the predefined functions.
+@command{@value{SSH}} and @command{login} that are used
+doing the actual user login. You either redefine these
+functions, or change the variables @code{display_function},
+@code{read_function} or @code{login_function} to contain the
+name of the functions you want to be called instead. The
+latter option can be used to extend rather then replace the
+predefined functions.
 
 The file @file{@value{ETC}/os-release} will have been sources
 before the extensions and @code{NAME} and @code{ANSI_COLOR}
