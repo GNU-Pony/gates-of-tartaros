@@ -62,9 +62,9 @@ got-cmd.install: got-cmd
 install: install-cmd install-doc
 
 .PHONY: install-cmd
-install-cmd: install-core
+install-cmd: install-core install-examples
 
-.PHONY: install-core install-examples
+.PHONY: install-core
 install-core: got.install got-cmd.install
 	install -Dm755 -- "got.install"     "$(DESTDIR)$(PREFIX)$(SBIN)/got"
 	install -Dm755 -- "got-cmd.install" "$(DESTDIR)$(PREFIX)$(BIN)/got-cmd"
