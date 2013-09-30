@@ -150,6 +150,9 @@ Extensions are loaded by Gates of Tartaros by sourcing
 the file @file{@value{ETC}/@value{GOT}rc} if it exists.
 @file{@value{ETC}/@value{GOT}rc} can change the behaviour
 of Gates of Tartaros or source other files that does so.
+The variable @code{tty} will be set from the beginning
+to the TTY file, without @code{/dev/}, for example
+@code{tty1}.
 
 Gates of Tartaros as three functions is calls directly after
 each other: @code{_display} for printing everying you see,
