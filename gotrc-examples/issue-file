@@ -4,7 +4,7 @@
 # only partially implemented, but also extended
 
 
-function _display
+_display ()
 {
     python3 <<EOF
 buf = "\\033[H\\033[2J"

@@ -21,12 +21,11 @@
 # Read the parameters: the first is the tty, the rest are exports
 tty="$1"
 shift 1
-export "$@"
+if [ ! $# = 0 ]; then
+    export "$@"
+fi
 
 # Change TTY
-exec 0<&-
-exec 1<&-
-exec 2<&-
 exec 0<>"@dev@/${tty}"
 exec 1>&0
 exec 2>&0
@@ -36,9 +35,17 @@ exec 2>&0
 tty_settings="$(stty --save)"
 
 
+# This is required if you want to use dash (and ash, since dash
+# [dash not ash] does not recognise $'').
+echo ()
+{
+    @echo@ "$@"
+}
+
+
 # Function used for printing information on the terminal for the user
 display_function=_display
-function _display
+_display ()
 {
     echo -en '\e[H\e[2J'
     echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
@@ -48,21 +55,21 @@ function _display
 
 # Function for reading the username form the terminal
 read_function=_read
-function _read
+_read ()
 {
     read user
 }
 
 # Function for logging in the user
 login_function=_login
-function _login
+_login ()
 {
-    if [ ! "${user/@/}" = "${user}" ]; then
+    if [ ! "${user%@*}" = "${user}" ]; then
 	setsid -c @ssh@ ${user} || sleep 3
 	# The sleep allows you to see any error you made
-    elif [ "${user::1}" = "-" ]; then
+    elif [ "${user%%-*}" = "" ]; then
 	stty -icanon -echo -isig -ix{on,off,any}
-	echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
+	echo -e '\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
 	sleep 600
     else
 	setsid -c login -- "${user}"

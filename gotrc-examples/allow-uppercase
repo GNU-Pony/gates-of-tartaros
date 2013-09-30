@@ -6,17 +6,17 @@
 read_function_allow_uppercase=$read_function
 read_function=_read_allow_uppercase
 
-function _read_allow_uppercase
+_read_allow_uppercase ()
 {
     $read_function_allow_uppercase
     lower=""
     for word in $user; do
-	if [ ! "${word::1}" = "-" ]; then # this check is done so ssh arguments are not made into lower case
-	    word="$(sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/' <<< "${word}")"
+	if [ ! "${word%%-*}" = "" ]; then # This check is done so SSH arguments are not made into lower case
+	    word="$(echo "${word}" | sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/')"
 	fi
 	lower="${lower} ${word}"
     done
-    lower="${lower:1}"
+    lower="${lower# *}"
     if [ ! "${lower}" = "${user}" ]; then
 	#stty olcuc ## Uncomment this if you want to go old-school Unix, too bad
 	            ## it will break colours and only uppercases ASCII letters.
