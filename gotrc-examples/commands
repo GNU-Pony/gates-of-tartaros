@@ -16,11 +16,11 @@ _login_commands ()
 	elif [ "${user}" = "+time" ]; then
 	    echo
 	    date +%Y-\(%m\)%b-%d\ %T,\ %a\ w%W/%V,\ %Z
-	    read
+	    read __
 	elif [ "${user}" = "+battery" ]; then
 	    echo
 	    acpi -V
-	    read
+	    read __
 	elif [ "${user}" = "+backlight" ]; then
 	    if [ "${LANG/UTF-8/}" = "${LANG}" ]; then
 		export LANG="en_GB.UTF-8"
@@ -35,7 +35,7 @@ Recognised commands include:
 +reboot       Reboot the computer
 +backlight    Adjust the backlight
 EOF
-	    read
+	    read __
 	fi
     else
 	$login_function_commands
