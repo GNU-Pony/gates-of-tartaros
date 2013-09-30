@@ -38,7 +38,7 @@ info/%.texinfo.install: info/%.texinfo
 	sed -i 's:^@set SSH ssh:@set SSH $(SSH):g' "$@"
 
 .PHONY: cmd
-cmd: got.install got-cmd.install
+cmd: got.install
 
 got.install: got
 	cp "$<" "$@"
@@ -49,10 +49,6 @@ got.install: got
 	sed -i 's:@command@:$(COMMAND):g' "$@"
 	sed -i 's:@ssh@:$(SSH):g' "$@"
 
-got-cmd.install: got-cmd
-	cp "$<" "$@"
-	sed -i 's:#!/usr/bin/env bash:#!$(BASH_SHEBANG):g' "$@"
-
 
 
 .PHONY: install
@@ -62,9 +58,8 @@ install: install-cmd install-doc
 install-cmd: install-core install-examples
 
 .PHONY: install-core
-install-core: got.install got-cmd.install
+install-core: got.install
 	install -Dm755 -- "got.install"     "$(DESTDIR)$(PREFIX)$(SBIN)/got"
-	install -Dm755 -- "got-cmd.install" "$(DESTDIR)$(PREFIX)$(BIN)/got-cmd"
 	install -d     --                   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
 	install  -m644 -- COPYING LICENSE   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
 
@@ -85,8 +80,7 @@ install-info: gates-of-tartaros.info.gz
 .PHONY: uninstall
 uninstall:
 	-rm -- "$(DESTDIR)$(PREFIX)$(SBIN)/got"
-	-rm -- "$(DESTDIR)$(PREFIX)$(BIN)/got-cmd"
-	-rm -- "$(DESTDIR)$(SYSCONF)/gotrc.examples/lower-left-ponysay"
+	-rm -r -- "$(DESTDIR)$(SYSCONF)/gotrc.examples"
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/COPYING"
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/LICENSE"
 	-rm -d -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
