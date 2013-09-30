@@ -7,4 +7,19 @@ __pycache__/
 *.sw[op]
 *.py[co]
 *.install
+*.gz
+*.xz
+*.aux
+*.cp
+*.fn
+*.info
+*.ky
+*.log
+*.pdf
+*.ps
+*.dvi
+*.pg
+*.toc
+*.tp
+*.vr
 

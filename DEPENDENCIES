@@ -19,4 +19,6 @@ sed		sed		required
 coreutils	cp		required
 coreutils	rm		required
 coreutils	install		required
+texinfo		makeinfo	opt-out: for info manual
+gzip		gzip		opt-out: for info manual compression
 
