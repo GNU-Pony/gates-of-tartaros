@@ -18,30 +18,53 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if [ "$1" = "---" ]; then
+if [ "$1" = "-" ]; then
     tty="$2"
     shift 2
+    
+    export "$@"
+    
+    function _login
+    {
+	read user
+	if [ ! "${user/@/}" = "${user}" ]; then
+	    export GOT_COMMAND="ssh ${user}"
+	    login -p -f sshlogin
+	elif [ "${user::1}" = "-" ]; then
+	    stty -icanon -echo -isig -ix{on,off,any}
+	    echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
+	    sleep 600
+	else
+	    login -- "${user}"
+	fi
+    }
+    
+    function _display
+    {
+	echo -en '\e[H\e[2J'
+	echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
+	echo
+	echo -n 'Login: '
+    }
     
     NAME="$(uname -o)"
     ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
     if [ -f "@etc@/os-release" ]; then
 	. "@etc@/os-release"
     fi
-    
     if [ -f "@etc@/@command@rc" ]; then
 	.  "@etc@/@command@rc"
-    else
-	echo -en '\e[H\e[2J'
-	echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
-	echo
-	echo -n 'Login: '
     fi
     
-    tty_settings="$(stty --save)"
-    @prefix@@libexec@/@command@.py "$@"
-    stty "${tty_settings}"
+    _display
+    _login
 else
+    # cannot get any other solution to work with `login`
+    # then to spawn a new process with pipes preset
+    
     tty="/dev/$1"
-    "$0" --- "$@" > "${tty}" 2> "${tty}" < "${tty}"
+    tty_settings="$(stty --save)"
+    "$0" - "$@" > "${tty}" 2> "${tty}" < "${tty}"
+    stty "${tty_settings}"
 fi
 
