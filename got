@@ -31,7 +31,7 @@ if [ "$1" = "-" ]; then
     {
 	read user
 	if [ ! "${user/@/}" = "${user}" ]; then
-	    export GOT_COMMAND="ssh ${user}"
+	    export GOT_COMMAND="@ssh@ ${user}"
 	    login -p -f @sshlogin@
 	elif [ "${user::1}" = "-" ]; then
 	    stty -icanon -echo -isig -ix{on,off,any}
@@ -65,7 +65,7 @@ else
     # cannot get any other solution to work with `login`
     # then to spawn a new process with pipes preset
     
-    tty="/dev/$1"
+    tty="@dev@/$1"
     tty_settings="$(stty --save)"
     "$0" - "$@" > "${tty}" 2> "${tty}" < "${tty}"
     stty "${tty_settings}"

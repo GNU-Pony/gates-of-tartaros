@@ -1,11 +1,13 @@
 PREFIX =
 SYSCONF = /etc
+DEV = /dev
 BIN = /bin
 SBIN = /sbin
 LICENSES = /usr/share/licenses
 COMMAND = got
 PKGNAME = gates-of-tartaros
 SSHUSER = sshlogin
+SSH = ssh
 
 BASH_SHEBANG = /usr/bin/env bash
 
@@ -16,9 +18,11 @@ got.install: got
 	cp "$<" "$@"
 	sed -i 's:#!/usr/bin/env bash:#!$(BASH_SHEBANG):g' "$@"
 	sed -i 's:@prefix@:$(PREFIX):g' "$@"
+	sed -i 's:@dev@:$(DEV):g' "$@"
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
 	sed -i 's:@command@:$(COMMAND):g' "$@"
 	sed -i 's:@sshlogin@:$(SSHUSER):g' "$@"
+	sed -i 's:@ssh@:$(SSH):g' "$@"
 
 got-cmd.install: got-cmd
 	cp "$<" "$@"
