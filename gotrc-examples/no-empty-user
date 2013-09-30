@@ -1,0 +1,16 @@
+# -*- shell-script -*-
+
+# The module restarts gates-of-tartaros is the user line is left empty
+
+
+read_function_no_empty_user=$read_function
+read_function=_read_no_empty_user
+
+function _read_no_empty_user
+{
+    $read_function_no_empty_user
+    if ["${lower}" = "" ]; then
+	exit 0
+    fi
+}
+
