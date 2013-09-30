@@ -1,7 +1,7 @@
 Minimal replacement for agetty written in
 GNU Bash with support for remote SSH login.
 
-En example /etc/gotrc file is included,
+An example /etc/gotrc file is included,
 it requires ponysay, util-say and KMS
 support, and prints a random pony.
 
