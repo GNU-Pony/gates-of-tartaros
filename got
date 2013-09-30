@@ -68,7 +68,7 @@ _login ()
 	setsid -c @ssh@ ${user} || sleep 3
 	# The sleep allows you to see any error you made
     elif [ ! "${user}" = "" ] && [ "${user%%-*}" = "" ]; then
-	stty -icanon -echo -isig -ix{on,off,any}
+	stty -icanon -echo -isig -ixon -ixoff -ixany
 	echo -e '\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
 	sleep 600
     else
