@@ -19,7 +19,7 @@ function _login_commands
 	    fi
 	    adjbacklight
 	else
-	    echo <<EOF
+	    cat <<EOF
 Command is not recognised.
 Recognised commands include:
 
