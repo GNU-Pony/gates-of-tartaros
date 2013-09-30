@@ -43,7 +43,7 @@ uninstall:
 	-rm -- "$(DESTDIR)$(SYSCONF)/gotrc.examples/lower-left-ponysay"
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/COPYING"
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/LICENSE"
-	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
+	-rm -d -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
 
 
 clean:
