@@ -35,8 +35,9 @@ install: got.install got.py.install got-cmd.install
 	install -Dm755 -- "got.install"     "$(DESTDIR)$(PREFIX)$(SBIN)/got"
 	install -Dm755 -- "got.py.install"  "$(DESTDIR)$(PREFIX)$(LIBEXEC)/got.py"
 	install -Dm755 -- "got-cmd.install" "$(DESTDIR)$(PREFIX)$(BIN)/got-cmd"
-	install -Dm755 -- "gotrc"           "$(DESTDIR)$(SYSCONF)/gotrc.examples/lower-left-ponysay"
-	install -Dm755 -- COPYING LICENSE   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
+	install -Dm644 -- "gotrc"           "$(DESTDIR)$(SYSCONF)/gotrc.examples/lower-left-ponysay"
+	install -d     --                   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
+	install  -m644 -- COPYING LICENSE   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
 
 
 uninstall:
