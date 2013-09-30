@@ -10,6 +10,7 @@ PKGNAME = gates-of-tartaros
 SSH = ssh
 
 BASH_SHEBANG = /usr/bin/env bash
+ECHO = /usr/bin/echo
 
 EXAMPLES = lower-left-ponysay allow-uppercase issue-file commands no-empty-user
 
@@ -48,6 +49,7 @@ got.install: got
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
 	sed -i 's:@command@:$(COMMAND):g' "$@"
 	sed -i 's:@ssh@:$(SSH):g' "$@"
+	sed -i 's:@echo@:$(ECHO):g' "$@"
 
 
 
