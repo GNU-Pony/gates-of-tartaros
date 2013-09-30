@@ -16,7 +16,7 @@ function _display
     echo -en '\e['"$(( $height - $lines + 1 ));1H"
     echo -n "$(echo "${pony}" | sed -e 's:\x1b\[H\x1b\[2J::')${PALETTE}"
     echo -e "\e[H\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
-    echo 
+    echo
     echo -n 'Login: '
 }
 
