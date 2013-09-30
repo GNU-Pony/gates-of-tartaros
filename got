@@ -38,6 +38,6 @@ else
 fi
 
 tty_settings="$(stty --save)"
-@prefix@@libexec@@command@.py "$@" <> "/dev/${tty}" 2>&1
+@prefix@@libexec@/@command@.py "$@" <> "/dev/${tty}" 2>&1
 stty "${tty_settings}"
 
