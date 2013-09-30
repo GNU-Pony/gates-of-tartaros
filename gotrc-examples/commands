@@ -10,7 +10,7 @@ function _login_commands
 {
     if [ "${user::1}" = "+" ]; then
 	if [ "${user}" = "+shutdown" ]; then
-	    shutdown
+	    shutdown -h now
 	elif [ "${user}" = "+reboot" ]; then
 	    reboot
 	elif [ "${user}" = "+backlight" ]; then
