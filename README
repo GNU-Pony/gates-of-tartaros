@@ -1,8 +1,17 @@
 Minimal replacement for agetty written in
 GNU Bash with support for remote SSH login.
+
 Note however that because of the use of GNU
 Bash, rather than a compiled language,
 gates-of-tartaros uses more memory than agetty.
+
+You can configure your install to use dash
+instead of bash by running make with the
+argument BASH_SHEBANG="/usr/bin/env dash".
+Doing so will more halve the memory using,
+reducing the memory usage to slightly below
+agetty.
+
 
 To log in with over SSH type:
    user@host
