@@ -1,0 +1,22 @@
+RUNTIME DEPENDENCIES:
+
+<package>	<command>	<reason>
+util-linux	login		login is used for authorisation and login
+bash		bash		gates-of-tartaros is written in Bash
+openssh		ssh		(optional) used for SSH login
+coreutils	env		(opt-out) used to get the path to Bash in the shebangs
+coreutils	stty		used to lock the TTY if somepony ties something evil
+coreutils	sleep		used to wait for ten minues if somepony ties something evil
+coreutils	uname		used to get the name of the operating system as a distribution name fallback
+
+
+
+BUILD DEPENDENCIES:
+
+<package>	<command>	<when>
+make		make		required
+sed		sed		required
+coreutils	cp		required
+coreutils	rm		required
+coreutils	install		required
+
