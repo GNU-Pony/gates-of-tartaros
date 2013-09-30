@@ -1,5 +1,9 @@
 # -*- shell-script -*-
 
+# The module allows you to use upper case letters when login in, however, arguments
+# passed to external programs, like ssh, defined by the user in the login line
+# will be converted to lower case.
+
 
 read_function_allow_uppercase=$read_function
 read_function=_read_allow_uppercase
