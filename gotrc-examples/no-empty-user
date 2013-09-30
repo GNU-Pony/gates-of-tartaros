@@ -9,7 +9,7 @@ read_function=_read_no_empty_user
 function _read_no_empty_user
 {
     $read_function_no_empty_user
-    if ["${lower}" = "" ]; then
+    if [ "${lower}" = "" ]; then
 	exit 0
     fi
 }
