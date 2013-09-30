@@ -16,7 +16,7 @@ all: got.install got.py.install got-cmd.install
 
 got.install: got
 	cp "$<" "$@"
-	sed -i 's:#!/usr/bin/env bash:$(BASH_SHEBANG):g' "$@"
+	sed -i 's:#!/usr/bin/env bash:#!$(BASH_SHEBANG):g' "$@"
 	sed -i 's:@prefix@:$(PREFIX):g' "$@"
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
 	sed -i 's:@libexec@:$(LIBEXEC):g' "$@"
@@ -24,11 +24,11 @@ got.install: got
 
 got.py.install: got.py
 	cp "$<" "$@"
-	sed -i 's:#!/usr/bin/env python3:$(PY3_SHEBANG):g' "$@"
+	sed -i 's:#!/usr/bin/env python3:#!$(PY3_SHEBANG):g' "$@"
 
 got-cmd.install: got-cmd
 	cp "$<" "$@"
-	sed -i 's:#!/usr/bin/env bash:$(BASH_SHEBANG):g' "$@"
+	sed -i 's:#!/usr/bin/env bash:#!$(BASH_SHEBANG):g' "$@"
 
 
 install: got.install got.py.install got-cmd.install
