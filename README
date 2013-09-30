@@ -1,10 +1,6 @@
 Minimal replacement for agetty written in
 GNU Bash with support for remote SSH login.
 
-An example /etc/gotrc file is included,
-it requires ponysay, util-say and KMS
-support, and prints a random pony.
-
 To log in with over SSH type:
    user@host
    or

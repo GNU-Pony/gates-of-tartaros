@@ -12,6 +12,8 @@ SSH = ssh
 
 BASH_SHEBANG = /usr/bin/env bash
 
+EXAMPLES = lower-left-ponysay allow-uppercase
+
 
 
 .PHONY: all
@@ -60,12 +62,19 @@ got-cmd.install: got-cmd
 install: install-cmd install-doc
 
 .PHONY: install-cmd
-install-cmd: got.install got-cmd.install
+install-cmd: install-core
+
+.PHONY: install-core install-examples
+install-core: got.install got-cmd.install
 	install -Dm755 -- "got.install"     "$(DESTDIR)$(PREFIX)$(SBIN)/got"
 	install -Dm755 -- "got-cmd.install" "$(DESTDIR)$(PREFIX)$(BIN)/got-cmd"
-	install -Dm644 -- "gotrc"           "$(DESTDIR)$(SYSCONF)/gotrc.examples/lower-left-ponysay"
 	install -d     --                   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
 	install  -m644 -- COPYING LICENSE   "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
+
+.PHONY: install-examples
+install-examples: $(foreach EXAMPLE, $(EXAMPLES), gotrc-examples/$(EXAMPLE))
+	install -d     --    "$(DESTDIR)$(SYSCONF)/gotrc.examples"
+	install  -m644 -- $^ "$(DESTDIR)$(SYSCONF)/gotrc.examples"
 
 .PHONY: install-doc
 install-doc: install-info

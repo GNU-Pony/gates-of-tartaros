@@ -1,0 +1,17 @@
+# -*- shell-script -*-
+
+
+read_function_allow_uppercase=$read_function
+read_function=_read_allow_uppercase
+
+function _read_allow_uppercase
+{
+    $read_function_allow_uppercase
+    lower="$(sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm' <<< "${user}")"
+    if [ ! "${lower}" = "${user}" ]; then
+	#stty olcuc ## Uncomment this if you want to go old-school Unix, too bad
+	            ## it will break colours and only uppercases ASCII letters.
+	user="${lower}"
+    fi
+}
+
