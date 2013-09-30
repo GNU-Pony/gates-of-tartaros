@@ -8,7 +8,7 @@ login_function=_login_commands
 
 _login_commands ()
 {
-    if [ "${user%%+*}" = "" ]; then
+    if [ ! "${user}" = "" ] && [ "${user%%+*}" = "" ]; then
 	if [ "${user}" = "+shutdown" ]; then
 	    shutdown -h now
 	elif [ "${user}" = "+reboot" ]; then
