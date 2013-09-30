@@ -63,7 +63,7 @@ if [ "$1" = "-" ]; then
     $login_function
 else
     # cannot get any other solution to work with `login`
-    # then to spawn a new process with pipes preset
+    # than to spawn a new process with the pipes pre-set
     
     tty="@dev@/$1"
     tty_settings="$(stty --save)"
