@@ -18,62 +18,73 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if [ "$1" = "-" ]; then
-    tty="$2"
-    shift 2
-    
-    export "$@"
-    
-    display_function=_display
-    read_function=_read
-    login_function=_login
-    
-    function _display
-    {
-	echo -en '\e[H\e[2J'
-	echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
-	echo
-	echo -n 'Login: '
-    }
-    
-    function _read
-    {
-	read user
-    }
-    
-    function _login
-    {
-	if [ ! "${user/@/}" = "${user}" ]; then
-	    export GOT_COMMAND="@ssh@ ${user}"
-	    login -p -f @sshlogin@
-	elif [ "${user::1}" = "-" ]; then
-	    stty -icanon -echo -isig -ix{on,off,any}
-	    echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
-	    sleep 600
-	else
-	    login -- "${user}"
-	fi
-    }
-    
-    NAME="$(uname -o)"
-    ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
-    if [ -f "@etc@/os-release" ]; then
-	. "@etc@/os-release"
+# Read the parameters: the first is the tty, the rest are exports
+tty="$1"
+shift 1
+export "$@"
+
+# Change TTY
+exec 0<&-
+exec 1<&-
+exec 2<&-
+exec 0<>"/dev/${tty}"
+exec 1>&0
+exec 2>&0
+
+
+# Store TTY settings so they can be restorted for the next run
+tty_settings="$(stty --save)"
+
+
+# Function used for printing information on the terminal for the user
+display_function=_display
+function _display
+{
+    echo -en '\e[H\e[2J'
+    echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
+    echo
+    echo -n 'Login: '
+}
+
+# Function for reading the username form the terminal
+read_function=_read
+function _read
+{
+    read user
+}
+
+# Function for logging in the user
+login_function=_login
+function _login
+{
+    if [ ! "${user/@/}" = "${user}" ]; then
+	export GOT_COMMAND="ssh ${user}"
+	setsid -c login -p -f sshlogin
+    elif [ "${user::1}" = "-" ]; then
+	stty -icanon -echo -isig -ix{on,off,any}
+	echo $'\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
+	sleep 600
+    else
+	setsid -c login -- "${user}"
     fi
-    if [ -f "@etc@/@command@rc" ]; then
-	.  "@etc@/@command@rc"
-    fi
-    
-    tty_settings="$(stty --save)"
-    $display_function
-    $read_function
-    $login_function
-    stty "${tty_settings}"
-else
-    # cannot get any other solution to work with `login`
-    # than to spawn a new process with the pipes pre-set
-    
-    tty="@dev@/$1"
-    "$0" - "$@" > "${tty}" 2> "${tty}" < "${tty}"
+}
+
+
+# Load OS information and extensions
+NAME="$(uname -o)"
+ANSI_COLOR='01;34' # must be exactly ANSI_COLOR as it is defined in /etc/os-release
+if [ -f "/etc/os-release" ]; then
+    . "/etc/os-release"
 fi
+if [ -f "/etc/gotrc" ]; then
+    .  "/etc/gotrc"
+fi
+
+# Let the user log in
+$display_function
+$read_function
+$login_function
+
+# Restore the TTY settings for the next run
+stty "${tty_settings}"
 
