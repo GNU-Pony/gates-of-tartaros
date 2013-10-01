@@ -7,10 +7,9 @@ gates-of-tartaros uses more memory than agetty.
 
 You can configure your install to use dash
 instead of bash by running make with the
-argument BASH_SHEBANG="/usr/bin/env dash".
-Doing so will more halve the memory using,
-reducing the memory usage to slightly below
-that of agetty.
+argument SH=dash. Doing so will more halve
+the memory using, reducing the memory usage
+to slightly below that of agetty.
 
 
 To log in with over SSH type:

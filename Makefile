@@ -9,7 +9,8 @@ COMMAND = got
 PKGNAME = gates-of-tartaros
 SSH = ssh
 
-BASH_SHEBANG = /usr/bin/env bash
+SH = bash
+SH_SHEBANG = /usr/bin/env $(SH)
 ECHO = /usr/bin/echo
 
 EXAMPLES = lower-left-ponysay allow-uppercase issue-file commands no-empty-user
@@ -43,7 +44,7 @@ cmd: got.install
 
 got.install: got
 	cp "$<" "$@"
-	sed -i 's:#!/usr/bin/env bash:#!$(BASH_SHEBANG):g' "$@"
+	sed -i 's:#!/usr/bin/env bash:#!$(SH_SHEBANG):g' "$@"
 	sed -i 's:@prefix@:$(PREFIX):g' "$@"
 	sed -i 's:@dev@:$(DEV):g' "$@"
 	sed -i 's:@etc@:$(SYSCONF):g' "$@"
