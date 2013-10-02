@@ -13,7 +13,7 @@ SH = bash
 SH_SHEBANG = /usr/bin/env $(SH)
 ECHO = /usr/bin/echo
 
-EXAMPLES = lower-left-ponysay allow-uppercase issue-file commands no-empty-user
+EXAMPLES = README lower-left-ponysay allow-uppercase issue-file commands no-empty-user
 
 
 
