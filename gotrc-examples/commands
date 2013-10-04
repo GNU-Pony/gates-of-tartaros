@@ -26,6 +26,10 @@ _login_commands ()
 		export LANG="en_GB.UTF-8"
 	    fi
 	    adjbacklight
+	elif [ "${user}" = "+1" ]; then
+	    echo "Enter parameters: (e.g. tty7 TERM=linux)"
+	    read -r params
+	    setsid -- "$0" $params &
 	else
 	    cat <<EOF
 Command is not recognised.
