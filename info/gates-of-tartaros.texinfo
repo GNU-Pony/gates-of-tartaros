@@ -21,7 +21,7 @@
 
 @dircategory System
 @direntry
-* gates-of-tartaros: (gates-of-tartoros).   Extensible minimal TTY login manager with SSH support
+* gates-of-tartaros: (gates-of-tartaros).   Extensible minimal TTY login manager with SSH support
 @end direntry
 
 
