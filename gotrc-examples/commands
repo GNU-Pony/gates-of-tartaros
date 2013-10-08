@@ -38,6 +38,9 @@ Recognised commands include:
 +shutdown     Shutdown the computer
 +reboot       Reboot the computer
 +backlight    Adjust the backlight
++time         Print the current date and time
++battery      Print information relevant for your battery status
++1            Open a new gates-of-tartaros in another TTY
 EOF
 	    read __
 	fi
