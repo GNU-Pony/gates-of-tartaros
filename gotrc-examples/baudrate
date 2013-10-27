@@ -1,0 +1,20 @@
+# -*- shell-script -*-
+
+# This module allows you to configure baudrate on the computer-side
+# of a serial terminal by setting the environment variable BAUDRATE
+# to the baudrate in the baud unit, with only ditial.
+# 
+# It is highly recommended to set this as the first loaded module
+# so that the output does not get mangled.
+
+
+display_function_baudrate=$display_function
+display_function=_display_baudrate
+
+_display_baudrate ()
+{
+    if [ ! "${BAUDRATE}" = "" ]; then
+	stty ${BAUDRATE}
+    fi
+}
+
