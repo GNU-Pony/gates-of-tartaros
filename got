@@ -65,15 +65,36 @@ login_function=_login
 _login ()
 {
     if [ ! "${user%@*}" = "${user}" ]; then
-	setsid -c @ssh@ ${user} || sleep 3
-	# The sleep allows you to see any error you made
+	$_use_ssh_function
     elif [ ! "${user}" = "" ] && [ "${user%%-*}" = "" ]; then
-	stty -icanon -echo -isig -ixon -ixoff -ixany
-	echo -e '\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
-	sleep 600
+	$_lock_tty_function
     else
-	setsid -c login -- "${user}"
+	$_use_login_function
     fi
+}
+
+# Function for locking the TTY
+_lock_tty_function=_lock_tty
+_lock_tty ()
+{
+    stty -icanon -echo -isig -ixon -ixoff -ixany
+    echo -e '\e[01;31mNice try! Sleeping for 10 minutes...\e[00m'
+    sleep 600
+}
+
+# Function for performing the log in with `ssh`
+_use_ssh_function=_use_ssh
+_use_ssh ()
+{
+    setsid -c ssh ${user} || sleep 3
+    # The sleep allows you to see any error you made
+}
+
+# Function for performing the log in with `login`
+_use_login_function=_use_login
+_use_login ()
+{
+    setsid -c login -- "${user}"
 }
 
 
