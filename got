@@ -47,7 +47,7 @@ echo ()
 display_function=_display
 _display ()
 {
-    echo -en '\e[H\e[2J'
+    echo -en '\e[H\e[2J\e[?0c'
     echo -e "\e[${ANSI_COLOR}m${NAME} (${tty})\e[00m"
     echo
     echo -n 'Login: '
