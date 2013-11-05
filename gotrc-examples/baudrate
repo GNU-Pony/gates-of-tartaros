@@ -16,5 +16,6 @@ _display_baudrate ()
     if [ ! "${BAUDRATE}" = "" ]; then
 	stty ${BAUDRATE}
     fi
+    $display_function_baudrate
 }
 
