@@ -2,7 +2,7 @@
 
 # This requires KMS support and that the packages ponysay and util-say are installed.
 # It will print a random pony (not speech bubble) in the lower left corner of the screen,
-# as well as set a nice palette to the TTY and set up to use block cursor.
+# as well as set a nice palette to the TTY.
 
 
 _display ()
