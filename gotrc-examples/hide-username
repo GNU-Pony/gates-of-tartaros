@@ -1,0 +1,15 @@
+# -*- shell-script -*-
+
+# This module requires that got runs under GNU Bash.
+
+# This module hides the username when it is types,
+# this can be useful so that nopony can se your
+# passphrase if you type it in instead of your
+# username by mistake when you log in.
+
+
+_read ()
+{
+    read -s user
+}
+
