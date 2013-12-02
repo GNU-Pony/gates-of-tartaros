@@ -11,5 +11,6 @@
 _read ()
 {
     read -s user
+    echo
 }
 
