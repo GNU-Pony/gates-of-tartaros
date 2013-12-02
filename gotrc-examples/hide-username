@@ -13,7 +13,7 @@ read_function=_read_hide_username
 _read_hide_username ()
 {
     local _read_tty_settings
-    _read_tty_settings = "$(stty --save)"
+    _read_tty_settings="$(stty --save)"
     stty -echo
     
     $read_function_hide_username
