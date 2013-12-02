@@ -1,16 +1,34 @@
 # -*- shell-script -*-
 
-# This module requires that got runs under GNU Bash.
-
 # This module hides the username when it is types,
 # this can be useful so that nopony can se your
 # passphrase if you type it in instead of your
 # username by mistake when you log in.
 
 
-_read ()
+
+read_function_hide_username=$read_function
+read_function=_read_hide_username
+
+_read_hide_username ()
 {
-    read -s user
+    local _read_tty_settings
+    _read_tty_settings = "$(stty --save)"
+    stty -echo
+    
+    $read_function_hide_username
+    
+    stty "${_read_tty_settings}"
     echo
 }
+
+
+# If you use GNU Bash for gates-of-tartaros,
+# you can use this instead:
+
+# _read ()
+# {
+#     read -s user
+#     echo
+# }
 

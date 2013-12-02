@@ -3,7 +3,7 @@ RUNTIME DEPENDENCIES:
 <package>	<command>	<reason>
 util-linux	login		login is used for authorisation and login
 util-linux	setsid		used to start login in a new session
-bash		bash		(out-out) gates-of-tartaros is written in Bash; required for hide-username
+bash		bash		(out-out) gates-of-tartaros is written in Bash
 dash		dash		(opt-in) gates-of-tartaros is compatible with Dash
 openssh		ssh		(optional) used for SSH login
 coreutils	env		(opt-out) used to get the path to Bash in the shebangs
