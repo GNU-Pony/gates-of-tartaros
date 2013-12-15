@@ -1,0 +1,14 @@
+# -*- shell-script -*-
+
+# This module requires Bash as the gates-of-tartaros interpreters.
+# 
+# This module uses readline when reading, for example the username,
+# from the terminal. This allows the user to flexibly change the
+# line instead of erasing in order to get to the wanted possition.
+
+
+_read ()
+{
+    read -e user
+}
+
