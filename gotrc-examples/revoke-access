@@ -1,0 +1,16 @@
+# -*- shell-script -*-
+
+# This module removes access to the TTY after
+# the user logs out.
+
+
+display_function_revoke_access=$display_function
+display_function=_display_revoke_access
+
+_display_revoke_access ()
+{
+    chmod 640 "$(tty)"
+    chown 0:0 "$(tty)"
+    $display_function_revoke_access
+}
+

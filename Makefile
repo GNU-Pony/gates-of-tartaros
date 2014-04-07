@@ -15,7 +15,7 @@ ECHO = /usr/bin/echo
 
 EXAMPLES = README lower-left-ponysay allow-uppercase issue-file   \
            commands no-empty-user baudrate cerberus hide-username \
-           readline
+           readline revoke-access
 
 
 
