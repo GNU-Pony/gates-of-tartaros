@@ -2,7 +2,7 @@ These are templates you can used for your gotrc file.
 If you are happy with them as is, you can include
 them directly in your by gotrc file with for example:
 
-     . /etc/gotrc-examples/no-empty-uer
+     . /etc/gotrc-examples/no-empty-user
 
 Although, it may be better to copy the ones you are
 using into a directory named /etc/got.d and include
