@@ -1,3 +1,8 @@
+# Copying and distribution of this file, with or without modification,
+# are permitted in any medium without royalty provided the copyright
+# notice and this notice are preserved.  This file is offered as-is,
+# without any warranty.
+
 PREFIX =
 SYSCONF = /etc
 DEV = /dev
@@ -19,20 +24,17 @@ EXAMPLES = README lower-left-ponysay allow-uppercase issue-file   \
 
 
 
+.PHONY: default
+default: cmd info
+
 .PHONY: all
 all: cmd doc
 
 .PHONY: doc
-doc: info
+doc: info pdf ps dvi
 
-.PHONY: info
-info: gates-of-tartaros.info.gz
-
-%.info.gz: info/%.texinfo.install
-	makeinfo "$<"
-	gzip -9 -f "$*.info"
-
-info/%.texinfo.install: info/%.texinfo
+obj/gates-of-tartaros.texinfo: info/gates-of-tartaros.texinfo
+	mkdir -p obj
 	cp "$<" "$@"
 	sed -i 's:^@set BIN /bin:@set BIN $(PREFIX)$(BIN):g' "$@"
 	sed -i 's:^@set SBIN /sbin:@set SBIN $(PREFIX)$(SBIN):g' "$@"
@@ -40,6 +42,33 @@ info/%.texinfo.install: info/%.texinfo
 	sed -i 's:^@set ETC /etc:@set ETC $(SYSCONF):g' "$@"
 	sed -i 's:^@set GOT got:@set GOT $(COMMAND):g' "$@"
 	sed -i 's:^@set SSH ssh:@set SSH $(SSH):g' "$@"
+
+obj/fdl.texinfo: info/fdl.texinfo
+	mkdir -p obj
+	cp "$<" "$@"
+
+.PHONY: info
+info: gates-of-tartaros.info
+%.info: obj/%.texinfo obj/fdl.texinfo
+	makeinfo "$<"
+
+.PHONY: pdf
+pdf: gates-of-tartaros.pdf
+%.pdf: obj/%.texinfo obj/fdl.texinfo
+	cd obj && yes X | texi2pdf "../$<"
+	mv "obj/$@" "$@"
+
+.PHONY: dvi
+dvi: gates-of-tartaros.dvi
+%.dvi: obj/%.texinfo obj/fdl.texinfo
+	cd obj && yes X | $(TEXI2DVI) "../$<"
+	mv "obj/$@" "$@"
+
+.PHONY: ps
+ps: gates-of-tartaros.ps
+%.ps: obj/%.texinfo obj/fdl.texinfo
+	cd obj && yes X | texi2pdf --ps "../$<"
+	mv "obj/$@" "$@"
 
 .PHONY: cmd
 cmd: got.install
@@ -57,7 +86,10 @@ got.install: got
 
 
 .PHONY: install
-install: install-cmd install-doc
+install: install-cmd install-info
+
+.PHONY: install
+install-all: install-cmd install-doc
 
 .PHONY: install-cmd
 install-cmd: install-core install-examples
@@ -74,11 +106,23 @@ install-examples: $(foreach EXAMPLE, $(EXAMPLES), gotrc-examples/$(EXAMPLE))
 	install  -m644 -- $^ "$(DESTDIR)$(SYSCONF)/gotrc.examples"
 
 .PHONY: install-doc
-install-doc: install-info
+install-doc: install-info install-pdf install-ps install-dvi
 
 .PHONY: install-info
-install-info: gates-of-tartaros.info.gz
-	install -Dm644 -- "$<" "$(DESTDIR)$(DATA)/info/$(PKGNAME).info.gz"
+install-info: gates-of-tartaros.info
+	install -Dm644 -- "$<" "$(DESTDIR)$(DATA)/info/$(PKGNAME).info"
+
+.PHONY: install-pdf
+install-pdf: gates-of-tartaros.pdf
+	install -Dm644 -- "$<" "$(DESTDIR)$(DATA)/doc/$(PKGNAME).pdf"
+
+.PHONY: install-ps
+install-ps: gates-of-tartaros.ps
+	install -Dm644 -- "$<" "$(DESTDIR)$(DATA)/doc/$(PKGNAME).ps"
+
+.PHONY: install-dvi
+install-dvi: gates-of-tartaros.dvi
+	install -Dm644 -- "$<" "$(DESTDIR)$(DATA)/doc/$(PKGNAME).dvi"
 
 
 
@@ -89,11 +133,14 @@ uninstall:
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/COPYING"
 	-rm -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)/LICENSE"
 	-rm -d -- "$(DESTDIR)$(LICENSES)/$(PKGNAME)"
-	-rm -- "$(DESTDIR)$(DATA)/info/$(PKGNAME).info.gz"
+	-rm -- "$(DESTDIR)$(DATA)/info/$(PKGNAME).info"
+	-rm -- "$(DESTDIR)$(DATA)/doc/$(PKGNAME).pdf"
+	-rm -- "$(DESTDIR)$(DATA)/doc/$(PKGNAME).ps"
+	-rm -- "$(DESTDIR)$(DATA)/doc/$(PKGNAME).dvi"
 
 
 
 .PHONY: clean
 clean:
-	-rm *.install *.info.gz 2>/dev/null
+	-rm -fr *.install *.{info,pdf,ps,dvi} obj
 
