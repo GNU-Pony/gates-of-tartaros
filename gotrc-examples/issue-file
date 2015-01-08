@@ -24,7 +24,8 @@
 
 _display ()
 {
-    python3 <<EOF
+    if [ ! -f "/etc/issue.default" ] || [ ! "$(md5sum < "/etc/issue.default")" = "$(md5sum < "/etc/issue")" ]; then
+	python3 <<EOF
 buf = "\\033[H\\033[2J"
 data = None
 with open("/etc/issue", "rb") as f:
@@ -59,7 +60,8 @@ for c in data:
         buf += c
 print(buf, end = "", flush = True)
 EOF
-    echo 
-    echo -n 'Login: '
+	echo 
+	echo -n 'Login: '
+    fi
 }
 
