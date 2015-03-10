@@ -26,32 +26,63 @@ _display ()
 {
     if [ ! -f "/etc/issue.default" ] || [ ! "$(md5sum < "/etc/issue.default")" = "$(md5sum < "/etc/issue")" ]; then
 	python3 <<EOF
+import os
+import sys
+from subprocess import Popen, PIPE
+def sh(command):
+    p = ['sh', '-c', command]
+    p = Popen(p, stdin = sys.stdin, stdout = PIPE, stderr = sys.stderr)
+    p = p.communicate()[0].decode('utf-8', 'replace')
+    return p.rstrip('\\n')
 buf = "\\033[H\\033[2J"
 data = None
 with open("/etc/issue", "rb") as f:
     data = f.read().decode("utf-8", "replace")
+uname = os.uname()
+inet = lambda ip, face = '' : sh("ifconfig %s | grep '^ *%s ' | grep -Po '%s [^ ]*' | cut -d ' ' -f 2 | sed 1q" % (face, ip, ip))
 esc = False
-for c in data:
+for i in range(len(data)):
+     c = data[i]
+     i += 1
+     d = '\\n' if i == len(data) else data[i]
+     def get_arg():
+         arg = ''
+         for j in range(i, len(data)):
+             arg += data[j]
+             if arg[-1] == '}':
+                 return arg[1 : -1]
+         return ''
     if esc:
         esc = False
         if  c in "eE":  buf += "\\033"
         elif c == "N":  buf += "\\n"
         elif c == "T":  buf += "\\t"
-        elif c == "s":  buf += "$(uname -s)"
-        elif c == "n":  buf += "$(uname -n)"
-        elif c == "r":  buf += "$(uname -r)"
-        elif c == "v":  buf += "$(uname -v)"
-        elif c == "m":  buf += "$(uname -m)"
-        elif c == "o":  buf += "$(hostname -y)"
-        elif c == "O":  buf += "$(hostname -d)"
-        elif c == "d":  buf += "$(date +%Y-%m-%d)"
-        elif c == "t":  buf += "$(date +%H:%M:%S)"
+        elif c == "s":  buf += uname.sysname
+        elif c == "n":  buf += uname.nodename
+        elif c == "r":  buf += uname.release
+        elif c == "v":  buf += uname.version
+        elif c == "m":  buf += uname.machine
+        elif c == "o":  buf += sh("hostname -y")
+        elif c == "O":  buf += sh("hostname -d")
+        elif c == "d":  buf += sh("date +%Y-%m-%d")
+        elif c == "t":  buf += sh("date +%H:%M:%S")
         elif c == "l":  buf += "${tty}"
-        elif c == "b":  buf += "$(stty | grep -Po 'speed [^ ]* baud;' | cut -d ' ' -f 2)"
-        elif c == "u":  buf += "$(who | wc -l)"
-        elif c == "U":  buf += "$(n=$(who | wc -l) ; echo $n $(echo $n | sed -e 's/^1$/user/' -e 's/^[0-9]\+$/users/'))"
-        elif c == "4":  buf += "$(ifconfig | grep '^ *inet ' | grep -Po 'inet [^ ]*' | cut -d ' ' -f 2 | sed 1q)"
-        elif c == "6":  buf += "$(ifconfig | grep '^ *inet6 ' | grep -Po 'inet6 [^ ]*' | cut -d ' ' -f 2 | sed 1q)"
+        elif c == "b":  buf += sh("stty | grep -Po 'speed [^ ]* baud;' | cut -d ' ' -f 2")
+        elif c == "u":  buf += sh("who | wc -l")
+        elif c == "U":  n = sh('who | wc -l') ; buf += n + (' user' if n == '1' else ' users')
+        elif c == "4":  buf += inet('inet', get_arg() if d == '{' else '')
+        elif c == "6":  buf += inet('inet6', get_arg() if d == '{' else '')
+        elif c == 'S':
+            if os.path.exists('/etc/os-release'):
+                arg = get_arg() if d == '{' else ''
+                if arg == '':
+                    arg = 'PRETTY_NAME'
+                val = sh('. /etc/os-release ; echo "${%s}"' % arg)
+                if (arg == 'PRETTY_NAME') and (val == ''):
+                    val = uname.sysname
+                elif arg == 'ANSI_COLOR':
+                    val = '\033[%sm' % val
+                buf += val
         else:
             buf += c
     elif c == "\\\\":
