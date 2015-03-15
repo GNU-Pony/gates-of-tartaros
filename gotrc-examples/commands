@@ -44,6 +44,16 @@ _login_commands ()
 		export LANG="en_GB.UTF-8"
 	    fi
 	    adjbacklight
+	elif [ "${user}" = "+keyboard" ]; then
+	    echo "Enter keyboard layout: (e.g. sv-latin1)"
+	    read -r layout
+	    if [ ! "$(echo ${layout})" = "" ]; then
+	       loadkeys -C "/dev/${tty}" -- ${layout}
+	       if [ ! $? = 0 ]; then
+		   echo 'Press ENTER to continue...'
+		   read
+	       fi
+	    fi
 	elif [ "${user}" = "+1" ]; then
 	    echo "Enter parameters: (e.g. tty7 TERM=linux)"
 	    read -r params
@@ -58,6 +68,7 @@ Recognised commands include:
 +backlight    Adjust the backlight
 +time         Print the current date and time
 +battery      Print information relevant for your battery status
++keyboard     Select keyboard layout for the TTY (This may effect all TTY:s)
 +1            Open a new gates-of-tartaros in another TTY
 EOF
 	    read __
