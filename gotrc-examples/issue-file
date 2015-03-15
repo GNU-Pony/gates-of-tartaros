@@ -18,8 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Module for using the /etc/issue file however
-# only partially implemented, but also extended
+# Module for using the /etc/issue file
 
 
 _display ()
@@ -41,17 +40,24 @@ with open("/etc/issue", "rb") as f:
 uname = os.uname()
 inet = lambda ip, face = '' : sh("ifconfig %s | grep '^ *%s ' | grep -Po '%s [^ ]*' | cut -d ' ' -f 2 | sed 1q" % (face, ip, ip))
 esc = False
+skip_arg = False
 for i in range(len(data)):
-     c = data[i]
-     i += 1
-     d = '\\n' if i == len(data) else data[i]
-     def get_arg():
-         arg = ''
-         for j in range(i, len(data)):
-             arg += data[j]
-             if arg[-1] == '}':
-                 return arg[1 : -1]
-         return ''
+    c = data[i]
+    i += 1
+    if skip_arg:
+        if c == '}':
+            skip_arg = False
+        continue
+    d = '\\n' if i == len(data) else data[i]
+    def get_arg():
+        global skip_arg
+        arg = ''
+        for j in range(i, len(data)):
+            arg += data[j]
+            if arg[-1] == '}':
+                skip_arg = True
+                return arg[1 : -1]
+        return ''
     if esc:
         esc = False
         if  c in "eE":  buf += "\\033"
@@ -67,7 +73,7 @@ for i in range(len(data)):
         elif c == "d":  buf += sh("date +%Y-%m-%d")
         elif c == "t":  buf += sh("date +%H:%M:%S")
         elif c == "l":  buf += "${tty}"
-        elif c == "b":  buf += sh("stty | grep -Po 'speed [^ ]* baud;' | cut -d ' ' -f 2")
+        elif c == "b":  buf += sh("stty < '/dev/${tty}' | grep -Po 'speed [^ ]* baud;' | cut -d ' ' -f 2")
         elif c == "u":  buf += sh("who | wc -l")
         elif c == "U":  n = sh('who | wc -l') ; buf += n + (' user' if n == '1' else ' users')
         elif c == "4":  buf += inet('inet', get_arg() if d == '{' else '')
@@ -77,11 +83,11 @@ for i in range(len(data)):
                 arg = get_arg() if d == '{' else ''
                 if arg == '':
                     arg = 'PRETTY_NAME'
-                val = sh('. /etc/os-release ; echo "${%s}"' % arg)
+                val = sh('. /etc/os-release ; echo "\${%s}"' % arg)
                 if (arg == 'PRETTY_NAME') and (val == ''):
                     val = uname.sysname
                 elif arg == 'ANSI_COLOR':
-                    val = '\033[%sm' % val
+                    val = '\\033[%sm' % val
                 buf += val
         else:
             buf += c
