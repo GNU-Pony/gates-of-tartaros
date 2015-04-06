@@ -55,20 +55,23 @@ info: gates-of-tartaros.info
 .PHONY: pdf
 pdf: gates-of-tartaros.pdf
 %.pdf: obj/%.texinfo obj/fdl.texinfo
-	cd obj && yes X | texi2pdf "../$<"
-	mv "obj/$@" "$@"
+	@mkdir -p obj/pdf
+	cd obj/pdf && yes X | texi2pdf "../../$<"
+	mv "obj/pdf/$@" "$@"
 
 .PHONY: dvi
 dvi: gates-of-tartaros.dvi
 %.dvi: obj/%.texinfo obj/fdl.texinfo
-	cd obj && yes X | $(TEXI2DVI) "../$<"
-	mv "obj/$@" "$@"
+	@mkdir -p obj/dvi
+	cd obj/dvi && yes X | $(TEXI2DVI) "../../$<"
+	mv "obj/dvi/$@" "$@"
 
 .PHONY: ps
 ps: gates-of-tartaros.ps
 %.ps: obj/%.texinfo obj/fdl.texinfo
-	cd obj && yes X | texi2pdf --ps "../$<"
-	mv "obj/$@" "$@"
+	@mkdir -p obj/ps
+	cd obj/ps && yes X | texi2pdf --ps "../../$<"
+	mv "obj/ps/$@" "$@"
 
 .PHONY: cmd
 cmd: got.install
