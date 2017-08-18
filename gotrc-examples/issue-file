@@ -95,7 +95,8 @@ for i in range(len(data)):
         esc = True
     else:
         buf += c
-print(buf, end = "", flush = True)
+sys.stdout.buffer.write(buf.encode('utf-8'))
+sys.stdout.buffer.flush()
 EOF
 	echo 
 	echo -n 'Login: '
